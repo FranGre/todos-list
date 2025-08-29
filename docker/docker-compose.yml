@@ -1,0 +1,32 @@
+version: '3.1'
+services:
+  app:
+    container_name: app_node
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    volumes:
+      - ../:/usr/src/app
+    restart: always
+    depends_on:
+      - db
+
+  dbmt:
+    container_name: dbmt_adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  db:
+    container_name: db_mysql
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: nochedepelis
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
