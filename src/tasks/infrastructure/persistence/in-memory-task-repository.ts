@@ -19,4 +19,8 @@ export class InMemoryTaskRepository implements TaskRepository {
         return null;
     }
 
+    remove(taskId: TaskId): void {
+        this.tasks = this.tasks.filter((task) => task.id().value() != taskId.value());
+    }
+
 }

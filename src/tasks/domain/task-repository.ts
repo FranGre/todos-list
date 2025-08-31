@@ -7,4 +7,6 @@ export interface TaskRepository {
 
     findById(taskId: TaskId): Task | null;
 
+    remove(taskId: TaskId): void;
+
 }
