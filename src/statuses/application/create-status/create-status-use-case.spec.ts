@@ -1,4 +1,4 @@
-import { StatusRepository } from "src/statuses/domain/status-repository";
+import { StatusRepository } from "../../domain/status-repository";
 import { StatusNameAlreadyExistsError } from "../../domain/errors/status-name-already-exists-error";
 import { InMemoryStatusRepository } from "../../infrastructure/persistence/in-memory-status-repository";
 import { CreateStatusCommand } from "./create-status-command";
