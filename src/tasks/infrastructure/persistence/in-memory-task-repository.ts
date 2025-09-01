@@ -23,4 +23,16 @@ export class InMemoryTaskRepository implements TaskRepository {
         this.tasks = this.tasks.filter((task) => task.id().value() != taskId.value());
     }
 
+    update(task: Task): void {
+        let newTasks: Task[] = [];
+
+        for (const element of this.tasks) {
+            if (element.id().value() == task.id().value()) {
+                newTasks.push(task);
+                continue;
+            }
+            newTasks.push(element);
+        }
+    }
+
 }

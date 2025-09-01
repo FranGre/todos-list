@@ -9,4 +9,6 @@ export interface TaskRepository {
 
     remove(taskId: TaskId): void;
 
+    update(task: Task): void;
+
 }

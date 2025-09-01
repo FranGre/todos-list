@@ -18,4 +18,8 @@ export class Task {
         return this._title;
     }
 
+    changeStatus(statusId: StatusId): void {
+        this._statusId = statusId;
+    }
+
 }
