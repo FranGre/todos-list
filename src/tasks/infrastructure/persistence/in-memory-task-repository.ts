@@ -1,6 +1,7 @@
 import { TaskRepository } from "../../domain/task-repository";
 import { Task } from "../../domain/task";
 import { TaskId } from "../../domain/value-objects/task-id/task-id";
+import { StatusId } from "../../../statuses/domain/value-objects/status-id/status-id";
 
 export class InMemoryTaskRepository implements TaskRepository {
     public tasks: Task[] = [];
@@ -10,7 +11,7 @@ export class InMemoryTaskRepository implements TaskRepository {
     }
 
     findById(taskId: TaskId): Task | null {
-         for (const task of this.tasks) {
+        for (const task of this.tasks) {
             if (task.id().value() == taskId.value()) {
                 return task;
             }
@@ -33,6 +34,18 @@ export class InMemoryTaskRepository implements TaskRepository {
             }
             newTasks.push(element);
         }
+    }
+
+    getByStatusId(statusId: StatusId): Task[] {
+        let tasks: Task[] = [];
+
+        for (const task of this.tasks) {
+            if (task.statusId().value() == statusId.value()) {
+                tasks.push(task);
+            }
+        }
+
+        return tasks;
     }
 
 }

@@ -10,4 +10,6 @@ export interface StatusRepository {
 
     findByName(statusName: StatusName): Status | null;
 
+    remove(statusId: StatusId): void;
+
 }

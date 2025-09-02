@@ -31,4 +31,8 @@ export class InMemoryStatusRepository implements StatusRepository {
         return null;
     }
 
+    remove(statusId: StatusId): void {
+        this.statuses = this.statuses.filter((status) => status.id().value() != statusId.value());
+    }
+
 }
