@@ -31,13 +31,15 @@ describe('CreateTaskUseCase', () => {
         const command = new CreateTaskCommand(createStatusResult.id, 'pasar la aspiradora');
         const result = createTaskUseCase.execute(command);
         expect(result)
-        .toEqual({id: result.id, statusId: command.statusId, title: command.title});
+            .toEqual({ id: result.id, statusId: command.statusId, title: command.title });
     });
 
-    it('should throw error when status id not exists', () => {
-        const notExistsStatudId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
-        const command = new CreateTaskCommand(notExistsStatudId, 'ir a comprar pan');
-        expect(() => createTaskUseCase.execute(command))
-        .toThrow(StatusNotFoundByIdError);
+    describe('errors', () => {
+        it('should throw error when status id not exists', () => {
+            const notExistsStatudId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
+            const command = new CreateTaskCommand(notExistsStatudId, 'ir a comprar pan');
+            expect(() => createTaskUseCase.execute(command))
+                .toThrow(StatusNotFoundByIdError);
+        });
     });
 });

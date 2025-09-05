@@ -17,13 +17,15 @@ describe('CreateStatusUseCase', () => {
         const command = new CreateStatusCommand('Pendiente');
         const result = useCase.execute(command);
         expect(result)
-        .toEqual({id: result.id, name: command.name});
+            .toEqual({ id: result.id, name: command.name });
     });
 
-    it('should throw error when status name already exists', () => {
-        const command = new CreateStatusCommand('Realizadas');
-        useCase.execute(command);
-        expect(() => useCase.execute(command))
-        .toThrow(StatusNameAlreadyExistsError);
+    describe('errors', () => {
+        it('should throw error when status name already exists', () => {
+            const command = new CreateStatusCommand('Realizadas');
+            useCase.execute(command);
+            expect(() => useCase.execute(command))
+                .toThrow(StatusNameAlreadyExistsError);
+        });
     });
 });

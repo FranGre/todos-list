@@ -45,20 +45,22 @@ describe('DeleteStatusUseCase', () => {
             .toEqual({ id: status.id });
     });
 
-    it('should throw error when status has associated tasks', () => {
-        const status = createStatus('Pendiente');
+    describe('errros', () => {
+        it('should throw error when status has associated tasks', () => {
+            const status = createStatus('Pendiente');
 
-        createTask(status.id, 'Hacer la cama');
+            createTask(status.id, 'Hacer la cama');
 
-        expect(() => deleteStatus(status.id))
-            .toThrow(StatusHasAssociatedTasksError);
-    });
+            expect(() => deleteStatus(status.id))
+                .toThrow(StatusHasAssociatedTasksError);
+        });
 
-    it('should throw error when status does not exists', () => {
-        const nonExistentStatusId = '9f9f23f7-53ee-4986-aad8-bfa0305585e7';
+        it('should throw error when status does not exists', () => {
+            const nonExistentStatusId = '9f9f23f7-53ee-4986-aad8-bfa0305585e7';
 
-        expect(() => deleteStatus(nonExistentStatusId))
-            .toThrow(StatusNotFoundByIdError);
+            expect(() => deleteStatus(nonExistentStatusId))
+                .toThrow(StatusNotFoundByIdError);
+        });
     });
 
     function createStatus(name: string): CreateStatusResult {

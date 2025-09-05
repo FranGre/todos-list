@@ -30,10 +30,12 @@ describe('GetStatusUseCase', () => {
             });
     });
 
-    it('should throw an error when status does not exists', () => {
-        const nonExistentStatusId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
-        expect(() => getStatus(nonExistentStatusId))
-            .toThrow(StatusNotFoundByIdError);
+    describe('errors', () => {
+        it('should throw an error when status does not exists', () => {
+            const nonExistentStatusId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
+            expect(() => getStatus(nonExistentStatusId))
+                .toThrow(StatusNotFoundByIdError);
+        });
     });
 
     function createStatus(name: string): CreateStatusResult {

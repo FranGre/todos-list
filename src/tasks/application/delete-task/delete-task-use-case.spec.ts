@@ -44,10 +44,12 @@ describe('DeleteTaskUseCase', () => {
             .toBeNull();
     });
 
-    it('should throw error when task id not exists', () => {
-        const notExistsTaskId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
-        expect(() => deleteTask(notExistsTaskId))
-            .toThrow(TaskNotFoundByIdError);
+    describe('errors', () => {
+        it('should throw error when task id not exists', () => {
+            const notExistsTaskId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
+            expect(() => deleteTask(notExistsTaskId))
+                .toThrow(TaskNotFoundByIdError);
+        });
     });
 
     function createStatus(name: string): CreateStatusResult {

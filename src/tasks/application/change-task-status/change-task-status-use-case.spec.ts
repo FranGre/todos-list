@@ -47,23 +47,25 @@ describe('ChangeTaskStatusUseCase', () => {
             .toEqual({ id: task.id, statusId: doneStatus.id, title: task.title });
     });
 
-    it('should throw error when task id not exists', () => {
-        const nonExistentTaskId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
-        const status = createStatus('Pendiente');
+    describe('errors', () => {
+        it('should throw error when task id not exists', () => {
+            const nonExistentTaskId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
+            const status = createStatus('Pendiente');
 
-        expect(() => changeTaskStatus(nonExistentTaskId, status.id))
-            .toThrow(TaskNotFoundByIdError);
-    });
+            expect(() => changeTaskStatus(nonExistentTaskId, status.id))
+                .toThrow(TaskNotFoundByIdError);
+        });
 
-    it('should throw error when status id not exists', () => {
-        const status = createStatus('Pendiente');
+        it('should throw error when status id not exists', () => {
+            const status = createStatus('Pendiente');
 
-        const task = createTask(status.id, 'pasar la aspiradora');
+            const task = createTask(status.id, 'pasar la aspiradora');
 
-        const nonExistentStatuskId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
+            const nonExistentStatuskId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
 
-        expect(() => changeTaskStatus(task.id, nonExistentStatuskId))
-            .toThrow(StatusNotFoundByIdError);
+            expect(() => changeTaskStatus(task.id, nonExistentStatuskId))
+                .toThrow(StatusNotFoundByIdError);
+        });
     });
 
     function createStatus(name: string): CreateStatusResult {

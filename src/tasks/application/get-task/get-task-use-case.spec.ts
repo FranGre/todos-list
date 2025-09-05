@@ -45,10 +45,12 @@ describe('GetTaskUseCase', () => {
             });
     });
 
-    it('should throw an error when task does not exists', () => {
-        const nonExistentTaskId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
-        expect(() => getTask(nonExistentTaskId))
-            .toThrow(TaskNotFoundByIdError);
+    describe('erros', () => {
+        it('should throw an error when task does not exists', () => {
+            const nonExistentTaskId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
+            expect(() => getTask(nonExistentTaskId))
+                .toThrow(TaskNotFoundByIdError);
+        });
     });
 
     function createStatus(name: string): CreateStatusResult {
