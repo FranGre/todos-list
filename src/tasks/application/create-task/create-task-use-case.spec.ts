@@ -8,6 +8,8 @@ import { CreateTaskUseCase } from "./create-task-use-case";
 import { TaskRepository } from "../../domain/task-repository";
 import { InMemoryTaskRepository } from "../../infrastructure/persistence/in-memory-task-repository";
 import { StatusNotFoundByIdError } from "../../../statuses/domain/errors/status-not-found-by-id-error";
+import { CreateStatusResult } from "../../../statuses/application/create-status/create-status-result";
+import { CreateTaskResult } from "./create-task-result";
 
 describe('CreateTaskUseCase', () => {
     let statusRepository: StatusRepository;
@@ -25,21 +27,25 @@ describe('CreateTaskUseCase', () => {
     });
 
     it('should create a task when recieves valid inputs', () => {
-        const createStatusCommand = new CreateStatusCommand('Pendiente');
-        const createStatusResult = createStatusUseCase.execute(createStatusCommand);
-
-        const command = new CreateTaskCommand(createStatusResult.id, 'pasar la aspiradora');
-        const result = createTaskUseCase.execute(command);
-        expect(result)
-            .toEqual({ id: result.id, statusId: command.statusId, title: command.title });
+        const status = createStatus('Pendiente');
+        const task = createTask(status.id, 'pasar la aspiradora');
+        expect(task)
+            .toEqual({ id: task.id, statusId: task.statusId, title: task.title });
     });
 
     describe('errors', () => {
         it('should throw error when status id not exists', () => {
             const notExistsStatudId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
-            const command = new CreateTaskCommand(notExistsStatudId, 'ir a comprar pan');
-            expect(() => createTaskUseCase.execute(command))
+            expect(() => createTask(notExistsStatudId, 'ir a comprar pan'))
                 .toThrow(StatusNotFoundByIdError);
         });
     });
+
+    function createStatus(name: string): CreateStatusResult {
+        return createStatusUseCase.execute(new CreateStatusCommand(name));
+    }
+
+    function createTask(statusId: string, title: string): CreateTaskResult {
+        return createTaskUseCase.execute(new CreateTaskCommand(statusId, title));
+    }
 });
