@@ -1,6 +1,6 @@
-import { StatusRepository } from "../../domain/status-repository";
+import { StatusRepository } from "../../domain/repositories/status-repository";
 import { CreateStatusUseCase } from "../create-status/create-status-use-case";
-import { InMemoryStatusRepository } from "../../infrastructure/persistence/in-memory-status-repository";
+import { InMemoryStatusRepository } from "../../infrastructure/persistence/in-memory/in-memory-status-repository";
 import { CreateStatusResult } from "../create-status/create-status-result";
 import { CreateStatusCommand } from "../create-status/create-status-command";
 import { GetStatusesQuery } from "./get-statuses-query";

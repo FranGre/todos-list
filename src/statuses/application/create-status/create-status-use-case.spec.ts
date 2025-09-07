@@ -1,6 +1,6 @@
-import { StatusRepository } from "../../domain/status-repository";
+import { StatusRepository } from "../../domain/repositories/status-repository";
 import { StatusNameAlreadyExistsError } from "../../domain/errors/status-name-already-exists-error";
-import { InMemoryStatusRepository } from "../../infrastructure/persistence/in-memory-status-repository";
+import { InMemoryStatusRepository } from "../../infrastructure/persistence/in-memory/in-memory-status-repository";
 import { CreateStatusCommand } from "./create-status-command";
 import { CreateStatusUseCase } from "./create-status-use-case";
 import { CreateStatusResult } from "./create-status-result";

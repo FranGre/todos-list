@@ -1,5 +1,5 @@
-import { StatusRepository } from "../../domain/status-repository";
-import { InMemoryStatusRepository } from "../../infrastructure/persistence/in-memory-status-repository";
+import { StatusRepository } from "../../domain/repositories/status-repository";
+import { InMemoryStatusRepository } from "../../infrastructure/persistence/in-memory/in-memory-status-repository";
 import { EnsureStatusExistsById } from "../../domain/services/ensure-status-exists-by-id";
 import { StatusNotFoundByIdError } from "../../../statuses/domain/errors/status-not-found-by-id-error";
 import { CreateStatusResult } from "../create-status/create-status-result";

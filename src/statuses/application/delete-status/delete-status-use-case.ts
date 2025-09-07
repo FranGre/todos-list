@@ -1,5 +1,5 @@
 import { EnsureStatusExistsById } from "../../../statuses/domain/services/ensure-status-exists-by-id";
-import { StatusRepository } from "../../../statuses/domain/status-repository";
+import { StatusRepository } from "../../domain/repositories/status-repository";
 import { DeleteStatusCommand } from "./delete-status-command";
 import { StatusId } from "../../../statuses/domain/value-objects/status-id/status-id";
 import { DeleteStatusResult } from "./delete-status-result";

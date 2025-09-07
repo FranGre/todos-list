@@ -1,7 +1,7 @@
-import { GetStatusesCriteria } from "../application/get-statuses/get-statuses-criteria";
-import { Status } from "./status";
-import { StatusId } from "./value-objects/status-id/status-id";
-import { StatusName } from "./value-objects/status-name/status-name";
+import { GetStatusesCriteria } from "../../application/get-statuses/get-statuses-criteria";
+import { Status } from "../status";
+import { StatusId } from "../value-objects/status-id/status-id";
+import { StatusName } from "../value-objects/status-name/status-name";
 
 export interface StatusRepository {
 

@@ -1,6 +1,6 @@
 import { StatusNotFoundByIdError } from "../errors/status-not-found-by-id-error";
 import { Status } from "../status";
-import { StatusRepository } from "../status-repository";
+import { StatusRepository } from "../repositories/status-repository";
 import { StatusId } from "../value-objects/status-id/status-id";
 
 export class EnsureStatusExistsById {

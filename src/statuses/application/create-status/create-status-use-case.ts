@@ -4,7 +4,7 @@ import { StatusName } from "../../domain/value-objects/status-name/status-name";
 import { CreateStatusResult } from "./create-status-result";
 import { CreateStatusMapper } from "./create-status-mapper";
 import { Status } from "../../domain/status";
-import { StatusRepository } from "../../domain/status-repository";
+import { StatusRepository } from "../../domain/repositories/status-repository";
 import { StatusNameAlreadyExistsError } from "../../domain/errors/status-name-already-exists-error";
 
 export class CreateStatusUseCase {

@@ -1,8 +1,8 @@
-import { GetStatusesCriteria } from "../../../statuses/application/get-statuses/get-statuses-criteria";
-import { Status } from "../../domain/status";
-import { StatusRepository } from "../../domain/status-repository";
-import { StatusId } from "../../domain/value-objects/status-id/status-id";
-import { StatusName } from "../../domain/value-objects/status-name/status-name";
+import { GetStatusesCriteria } from "../../../../statuses/application/get-statuses/get-statuses-criteria";
+import { Status } from "../../../domain/status";
+import { StatusRepository } from "../../../domain/repositories/status-repository";
+import { StatusId } from "../../../domain/value-objects/status-id/status-id";
+import { StatusName } from "../../../domain/value-objects/status-name/status-name";
 
 export class InMemoryStatusRepository implements StatusRepository {
 

@@ -1,8 +1,8 @@
 import { EnsureStatusExistsById } from "../../../statuses/domain/services/ensure-status-exists-by-id";
 import { CreateStatusCommand } from "../../../statuses/application/create-status/create-status-command";
 import { CreateStatusUseCase } from "../../../statuses/application/create-status/create-status-use-case";
-import { StatusRepository } from "../../../statuses/domain/status-repository";
-import { InMemoryStatusRepository } from "../../../statuses/infrastructure/persistence/in-memory-status-repository";
+import { StatusRepository } from "../../../statuses/domain/repositories/status-repository";
+import { InMemoryStatusRepository } from "../../../statuses/infrastructure/persistence/in-memory/in-memory-status-repository";
 import { CreateTaskCommand } from "../create-task/create-task-command";
 import { CreateTaskUseCase } from "../create-task/create-task-use-case";
 import { TaskRepository } from "../../domain/task-repository";
