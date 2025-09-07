@@ -1,7 +1,7 @@
-import { TaskRepository } from "../../domain/task-repository";
-import { Task } from "../../domain/task";
-import { TaskId } from "../../domain/value-objects/task-id/task-id";
-import { StatusId } from "../../../statuses/domain/value-objects/status-id/status-id";
+import { TaskRepository } from "../../../domain/repositories/task-repository";
+import { Task } from "../../../domain/task";
+import { TaskId } from "../../../domain/value-objects/task-id/task-id";
+import { StatusId } from "../../../../statuses/domain/value-objects/status-id/status-id";
 import { GetTasksCriteria } from "src/tasks/domain/criteria/get-tasks-criteria";
 
 export class InMemoryTaskRepository implements TaskRepository {

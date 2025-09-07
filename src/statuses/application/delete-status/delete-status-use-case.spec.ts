@@ -7,7 +7,7 @@ import { StatusNotFoundByIdError } from "../../../statuses/domain/errors/status-
 import { EnsureStatusExistsById } from "../../../statuses/domain/services/ensure-status-exists-by-id";
 import { TaskRepository } from "../../../tasks/domain/task-repository";
 import { CreateTaskUseCase } from "../../../tasks/application/create-task/create-task-use-case";
-import { InMemoryTaskRepository } from "../../../tasks/infrastructure/persistence/in-memory-task-repository";
+import { InMemoryTaskRepository } from "../../../tasks/infrastructure/persistence/in-memory/in-memory-task-repository";
 import { CreateTaskResult } from "../../../tasks/application/create-task/create-task-result";
 import { CreateTaskCommand } from "../../../tasks/application/create-task/create-task-command";
 import { DeleteStatusCommand } from "./delete-status-command";

@@ -1,7 +1,7 @@
-import { StatusId } from "../../statuses/domain/value-objects/status-id/status-id";
-import { GetTasksCriteria } from "./criteria/get-tasks-criteria";
-import { Task } from "./task";
-import { TaskId } from "./value-objects/task-id/task-id";
+import { StatusId } from "../../../statuses/domain/value-objects/status-id/status-id";
+import { GetTasksCriteria } from "../criteria/get-tasks-criteria";
+import { Task } from "../task";
+import { TaskId } from "../value-objects/task-id/task-id";
 
 export interface TaskRepository {
 

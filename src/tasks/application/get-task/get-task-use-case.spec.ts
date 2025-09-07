@@ -3,7 +3,7 @@ import { CreateStatusUseCase } from "../../../statuses/application/create-status
 import { TaskRepository } from "../../../tasks/domain/task-repository";
 import { CreateTaskUseCase } from "../create-task/create-task-use-case";
 import { InMemoryStatusRepository } from "../../../statuses/infrastructure/persistence/in-memory/in-memory-status-repository";
-import { InMemoryTaskRepository } from "../../../tasks/infrastructure/persistence/in-memory-task-repository";
+import { InMemoryTaskRepository } from "../../infrastructure/persistence/in-memory/in-memory-task-repository";
 import { EnsureStatusExistsById } from "../../../statuses/domain/services/ensure-status-exists-by-id";
 import { CreateStatusResult } from "../../../statuses/application/create-status/create-status-result";
 import { CreateTaskResult } from "../create-task/create-task-result";

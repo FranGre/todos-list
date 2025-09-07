@@ -6,7 +6,7 @@ import { InMemoryStatusRepository } from "../../../statuses/infrastructure/persi
 import { CreateTaskCommand } from "./create-task-command";
 import { CreateTaskUseCase } from "./create-task-use-case";
 import { TaskRepository } from "../../domain/task-repository";
-import { InMemoryTaskRepository } from "../../infrastructure/persistence/in-memory-task-repository";
+import { InMemoryTaskRepository } from "../../infrastructure/persistence/in-memory/in-memory-task-repository";
 import { StatusNotFoundByIdError } from "../../../statuses/domain/errors/status-not-found-by-id-error";
 import { CreateStatusResult } from "../../../statuses/application/create-status/create-status-result";
 import { CreateTaskResult } from "./create-task-result";

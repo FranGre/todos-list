@@ -9,7 +9,7 @@ import { CreateStatusResult } from "../../../statuses/application/create-status/
 import { CreateTaskResult } from "../create-task/create-task-result";
 import { ChangeTaskStatusCommand } from "./change-task-status-command";
 import { ChangeTaskStatusUseCase } from "./change-task-status-use-case";
-import { InMemoryTaskRepository } from "../../../tasks/infrastructure/persistence/in-memory-task-repository";
+import { InMemoryTaskRepository } from "../../infrastructure/persistence/in-memory/in-memory-task-repository";
 import { InMemoryStatusRepository } from "../../../statuses/infrastructure/persistence/in-memory/in-memory-status-repository";
 import { EnsureStatusExistsById } from "../../../statuses/domain/services/ensure-status-exists-by-id";
 import { EnsureTaskExistsById } from "../../../tasks/domain/services/ensure-task-exists-by-id";
