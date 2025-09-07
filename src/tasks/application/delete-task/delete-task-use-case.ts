@@ -1,5 +1,5 @@
 import { TaskId } from "../../domain/value-objects/task-id/task-id";
-import { TaskRepository } from "../../domain/task-repository";
+import { TaskRepository } from "../../domain/repositories/task-repository";
 import { DeleteTaskCommand } from "./delete-task-command";
 import { EnsureTaskExistsById } from "src/tasks/domain/services/ensure-task-exists-by-id";
 import { DeleteTaskResult } from "./delete-task-result";

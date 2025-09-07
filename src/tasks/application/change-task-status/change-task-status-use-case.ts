@@ -3,7 +3,7 @@ import { ChangeTaskStatusCommand } from "./change-task-status-command";
 import { TaskId } from "../../domain/value-objects/task-id/task-id";
 import { StatusId } from "../../../statuses/domain/value-objects/status-id/status-id";
 import { EnsureTaskExistsById } from "../../domain/services/ensure-task-exists-by-id";
-import { TaskRepository } from "../../domain/task-repository";
+import { TaskRepository } from "../../domain/repositories/task-repository";
 import { ChangeTaskStatusResult } from "./change-task-status-result";
 import { ChangeTaskStatusMapper } from "./change-task-status-mapper";
 

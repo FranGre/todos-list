@@ -1,7 +1,7 @@
 import { StatusHasAssociatedTasksError } from "../../../statuses/domain/errors/status-has-associated-tasks-error";
 import { StatusId } from "../../../statuses/domain/value-objects/status-id/status-id";
 import { Task } from "../task";
-import { TaskRepository } from "../task-repository";
+import { TaskRepository } from "../repositories/task-repository";
 
 export class EnsureStatusHasNoAssociatedTasks {
 

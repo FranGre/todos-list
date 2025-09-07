@@ -1,6 +1,6 @@
 import { TaskNotFoundByIdError } from "../errors/task-not-found-by-id-error";
 import { Task } from "../task";
-import { TaskRepository } from "../task-repository";
+import { TaskRepository } from "../repositories/task-repository";
 import { TaskId } from "../value-objects/task-id/task-id";
 
 export class EnsureTaskExistsById {

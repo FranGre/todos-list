@@ -2,7 +2,7 @@ import { CreateStatusCommand } from "../../../statuses/application/create-status
 import { CreateTaskCommand } from "../create-task/create-task-command";
 import { StatusRepository } from "../../../statuses/domain/repositories/status-repository";
 import { CreateStatusUseCase } from "../../../statuses/application/create-status/create-status-use-case";
-import { TaskRepository } from "../../../tasks/domain/task-repository";
+import { TaskRepository } from "../../../tasks/domain/repositories/task-repository";
 import { CreateTaskUseCase } from "../create-task/create-task-use-case";
 import { StatusNotFoundByIdError } from "../../../statuses/domain/errors/status-not-found-by-id-error";
 import { CreateStatusResult } from "../../../statuses/application/create-status/create-status-result";

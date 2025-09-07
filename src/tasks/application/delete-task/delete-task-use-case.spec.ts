@@ -5,7 +5,7 @@ import { StatusRepository } from "../../../statuses/domain/repositories/status-r
 import { InMemoryStatusRepository } from "../../../statuses/infrastructure/persistence/in-memory/in-memory-status-repository";
 import { CreateTaskCommand } from "../create-task/create-task-command";
 import { CreateTaskUseCase } from "../create-task/create-task-use-case";
-import { TaskRepository } from "../../domain/task-repository";
+import { TaskRepository } from "../../domain/repositories/task-repository";
 import { InMemoryTaskRepository } from "../../infrastructure/persistence/in-memory/in-memory-task-repository";
 import { DeleteTaskCommand } from "./delete-task-command";
 import { DeleteTaskUseCase } from "./delete-task-use-case";

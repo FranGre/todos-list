@@ -6,7 +6,7 @@ import { EnsureStatusExistsById } from "../../../statuses/domain/services/ensure
 import { Task } from "../../domain/task";
 import { TaskId } from "../../domain/value-objects/task-id/task-id";
 import { CreateTaskMapper } from "./create-task-mapper";
-import { TaskRepository } from "../../domain/task-repository";
+import { TaskRepository } from "../../domain/repositories/task-repository";
 
 export class CreateTaskUseCase {
 

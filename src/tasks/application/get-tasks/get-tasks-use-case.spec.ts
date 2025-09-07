@@ -1,6 +1,6 @@
 import { StatusRepository } from "../../../statuses/domain/repositories/status-repository";
 import { CreateStatusUseCase } from "../../../statuses/application/create-status/create-status-use-case";
-import { TaskRepository } from "../../domain/task-repository";
+import { TaskRepository } from "../../domain/repositories/task-repository";
 import { CreateTaskUseCase } from "../create-task/create-task-use-case";
 import { InMemoryStatusRepository } from "../../../statuses/infrastructure/persistence/in-memory/in-memory-status-repository";
 import { InMemoryTaskRepository } from "../../infrastructure/persistence/in-memory/in-memory-task-repository";

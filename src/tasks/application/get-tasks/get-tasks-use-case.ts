@@ -1,4 +1,4 @@
-import { TaskRepository } from "../../../tasks/domain/task-repository";
+import { TaskRepository } from "../../../tasks/domain/repositories/task-repository";
 import { GetTasksQuery } from "./get-tasks-query";
 import { GetTasksResult } from "./get-tasks-result";
 import { GetTasksMapper } from "./get-tasks-mapper";
