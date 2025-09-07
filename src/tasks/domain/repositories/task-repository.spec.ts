@@ -20,11 +20,9 @@ export function execute(taskRepository: TaskRepository, statusRepository: Status
 
         describe('create', () => {
             it('should store a task', () => {
-                const status = new Status(new StatusId, new StatusName('Pendiente'));
-                statusRepository.create(status);
+                const pending = createStatus('Pendiente');
 
-                const task = new Task(new TaskId, status.id(), new TaskTitle('Hacer la cama'));
-                taskRepository.create(task);
+                const task = createTask(pending.id().value(), 'Hacer la cama');
 
                 expect(taskRepository.findById(task.id()))
                     .toEqual(task);
@@ -33,11 +31,9 @@ export function execute(taskRepository: TaskRepository, statusRepository: Status
 
         describe('findById', () => {
             it('should return the task when it exists', () => {
-                const status = new Status(new StatusId, new StatusName('Pendiente'));
-                statusRepository.create(status);
+                const pending = createStatus('Pendiente');
 
-                const task = new Task(new TaskId, status.id(), new TaskTitle('Hacer la cama'));
-                taskRepository.create(task);
+                const task = createTask(pending.id().value(), 'Hacer la cama');
 
                 expect(taskRepository.findById(task.id()))
                     .toEqual(task);
@@ -53,11 +49,9 @@ export function execute(taskRepository: TaskRepository, statusRepository: Status
 
         describe('remove', () => {
             it('should remove a task when it exists', () => {
-                const status = new Status(new StatusId, new StatusName('Pendiente'));
-                statusRepository.create(status);
+                const pending = createStatus('Pendiente');
 
-                const task = new Task(new TaskId, status.id(), new TaskTitle('Hacer la cama'));
-                taskRepository.create(task);
+                const task = createTask(pending.id().value(), 'Hacer la cama');
 
                 taskRepository.remove(task.id());
 
@@ -77,19 +71,13 @@ export function execute(taskRepository: TaskRepository, statusRepository: Status
 
         describe('getByStatusId', () => {
             it('should return only tasks that match the given status id', () => {
-                const pending = new Status(new StatusId, new StatusName('Pending'));
-                const completed = new Status(new StatusId, new StatusName('Completed'));
-                statusRepository.create(pending);
-                statusRepository.create(completed);
+                const pending = createStatus('Pendiente');
+                const completed = createStatus('Completed');
 
-                const hacerLaCama = new Task(new TaskId, completed.id(), new TaskTitle('Hacer la cama'));
-                const limpiarElPolvo = new Task(new TaskId, completed.id(), new TaskTitle('Limpiar el polvo'));
-                const aspirar = new Task(new TaskId, pending.id(), new TaskTitle('aspirar'));
-                const mochar = new Task(new TaskId, pending.id(), new TaskTitle('mochar'));
-                taskRepository.create(hacerLaCama);
-                taskRepository.create(limpiarElPolvo);
-                taskRepository.create(aspirar);
-                taskRepository.create(mochar);
+                const hacerLaCama = createTask(completed.id().value(), 'Hacer la cama');
+                const limpiarElPolvo = createTask(completed.id().value(), 'Limpiar el polvo');
+                const aspirar = createTask(pending.id().value(), 'aspirar');
+                const mochar = createTask(pending.id().value(), 'mochar');
 
                 expect(taskRepository.getByFilters(new GetTasksCriteria(new StatusId(pending.id().value()))))
                     .toEqual([
@@ -99,20 +87,14 @@ export function execute(taskRepository: TaskRepository, statusRepository: Status
             });
 
             it('should return an empty array when no statuses match the given name', () => {
-                const pending = new Status(new StatusId, new StatusName('Pending'));
-                const completed = new Status(new StatusId, new StatusName('Completed'));
-                const cancelled = new Status(new StatusId, new StatusName('Cancelled'));
-                statusRepository.create(pending);
-                statusRepository.create(completed);
+                const pending = createStatus('Pendiente');
+                const completed = createStatus('Completed');
+                const cancelled = createStatus('Cancelled');
 
-                const hacerLaCama = new Task(new TaskId, completed.id(), new TaskTitle('Hacer la cama'));
-                const limpiarElPolvo = new Task(new TaskId, completed.id(), new TaskTitle('Limpiar el polvo'));
-                const aspirar = new Task(new TaskId, pending.id(), new TaskTitle('aspirar'));
-                const mochar = new Task(new TaskId, pending.id(), new TaskTitle('mochar'));
-                taskRepository.create(hacerLaCama);
-                taskRepository.create(limpiarElPolvo);
-                taskRepository.create(aspirar);
-                taskRepository.create(mochar);
+                const hacerLaCama = createTask(completed.id().value(), 'Hacer la cama');
+                const limpiarElPolvo = createTask(completed.id().value(), 'Limpiar el polvo');
+                const aspirar = createTask(pending.id().value(), 'aspirar');
+                const mochar = createTask(pending.id().value(), 'mochar');
 
                 expect(taskRepository.getByFilters(new GetTasksCriteria(new StatusId(cancelled.id().value()))))
                     .toEqual([]);
@@ -122,13 +104,10 @@ export function execute(taskRepository: TaskRepository, statusRepository: Status
 
         describe('getByFilters', () => {
             it('should return all tasks when no filters are provided', () => {
-                const pending = new Status(new StatusId, new StatusName('Pendiente'));
-                statusRepository.create(pending);
+                const pending = createStatus('Pendiente');
 
-                const hacerLaCama = new Task(new TaskId, pending.id(), new TaskTitle('Hacer la cama'));
-                const recogerLaRopa = new Task(new TaskId, pending.id(), new TaskTitle('Recoger la ropa'));
-                taskRepository.create(hacerLaCama);
-                taskRepository.create(recogerLaRopa);
+                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
 
                 expect(taskRepository.getByFilters(new GetTasksCriteria()))
                     .toEqual([
@@ -138,19 +117,13 @@ export function execute(taskRepository: TaskRepository, statusRepository: Status
             });
 
             it('should return only tasks that match the given status id', () => {
-                const pending = new Status(new StatusId, new StatusName('Pendiente'));
-                const done = new Status(new StatusId, new StatusName('Done'));
-                statusRepository.create(pending);
-                statusRepository.create(done);
+                const pending = createStatus('Pendiente');
+                const done = createStatus('Done');
 
-                const hacerLaCama = new Task(new TaskId, pending.id(), new TaskTitle('Hacer la cama'));
-                const recogerLaRopa = new Task(new TaskId, pending.id(), new TaskTitle('Recoger la ropa'));
-                const aspirar = new Task(new TaskId, done.id(), new TaskTitle('Aspirar'));
-                const fregar = new Task(new TaskId, done.id(), new TaskTitle('Fregar'));
-                taskRepository.create(hacerLaCama);
-                taskRepository.create(recogerLaRopa);
-                taskRepository.create(aspirar);
-                taskRepository.create(fregar);
+                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
+                const aspirar = createTask(done.id().value(), 'Aspirar');
+                const fregar = createTask(done.id().value(), 'Fregar');
 
                 expect(taskRepository.getByFilters(new GetTasksCriteria(pending.id())))
                     .toEqual([
@@ -160,19 +133,13 @@ export function execute(taskRepository: TaskRepository, statusRepository: Status
             });
 
             it('should return only tasks that match the given title', () => {
-                const pending = new Status(new StatusId, new StatusName('Pendiente'));
-                const done = new Status(new StatusId, new StatusName('Done'));
-                statusRepository.create(pending);
-                statusRepository.create(done);
+                const pending = createStatus('Pendiente');
+                const done = createStatus('Done');
 
-                const hacerLaCama = new Task(new TaskId, pending.id(), new TaskTitle('Hacer la cama'));
-                const recogerLaRopa = new Task(new TaskId, pending.id(), new TaskTitle('Recoger la ropa'));
-                const aspirar = new Task(new TaskId, done.id(), new TaskTitle('Aspirar'));
-                const fregar = new Task(new TaskId, done.id(), new TaskTitle('Fregar'));
-                taskRepository.create(hacerLaCama);
-                taskRepository.create(recogerLaRopa);
-                taskRepository.create(aspirar);
-                taskRepository.create(fregar);
+                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
+                const aspirar = createTask(done.id().value(), 'Aspirar');
+                const fregar = createTask(done.id().value(), 'Fregar');
 
                 expect(taskRepository.getByFilters(new GetTasksCriteria(undefined, new TaskTitle('la'))))
                     .toEqual([
@@ -182,19 +149,13 @@ export function execute(taskRepository: TaskRepository, statusRepository: Status
             });
 
             it('should return only tasks that match the given status id and title', () => {
-                const pending = new Status(new StatusId, new StatusName('Pendiente'));
-                const done = new Status(new StatusId, new StatusName('Done'));
-                statusRepository.create(pending);
-                statusRepository.create(done);
+                const pending = createStatus('Pendiente');
+                const done = createStatus('Done');
 
-                const hacerLaCama = new Task(new TaskId, pending.id(), new TaskTitle('Hacer la cama'));
-                const recogerLaRopa = new Task(new TaskId, pending.id(), new TaskTitle('Recoger la ropa'));
-                const aspirar = new Task(new TaskId, done.id(), new TaskTitle('Aspirar'));
-                const fregar = new Task(new TaskId, done.id(), new TaskTitle('Fregar'));
-                taskRepository.create(hacerLaCama);
-                taskRepository.create(recogerLaRopa);
-                taskRepository.create(aspirar);
-                taskRepository.create(fregar);
+                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
+                const aspirar = createTask(done.id().value(), 'Aspirar');
+                const fregar = createTask(done.id().value(), 'Fregar');
 
                 expect(taskRepository.getByFilters(new GetTasksCriteria(pending.id(), new TaskTitle('cama'))))
                     .toEqual([
@@ -204,59 +165,56 @@ export function execute(taskRepository: TaskRepository, statusRepository: Status
 
 
             it('should return an empty array when no tasks match the given status id', () => {
-                const pending = new Status(new StatusId, new StatusName('Pendiente'));
-                const done = new Status(new StatusId, new StatusName('Done'));
-                statusRepository.create(pending);
-                statusRepository.create(done);
+                const pending = createStatus('Pendiente');
+                const done = createStatus('Done');
 
-                const hacerLaCama = new Task(new TaskId, pending.id(), new TaskTitle('Hacer la cama'));
-                const recogerLaRopa = new Task(new TaskId, pending.id(), new TaskTitle('Recoger la ropa'));
-                const aspirar = new Task(new TaskId, pending.id(), new TaskTitle('Aspirar'));
-                const fregar = new Task(new TaskId, pending.id(), new TaskTitle('Fregar'));
-                taskRepository.create(hacerLaCama);
-                taskRepository.create(recogerLaRopa);
-                taskRepository.create(aspirar);
-                taskRepository.create(fregar);
+                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
+                const aspirar = createTask(pending.id().value(), 'Aspirar');
+                const fregar = createTask(pending.id().value(), 'Fregar');
 
                 expect(taskRepository.getByFilters(new GetTasksCriteria(done.id())))
                     .toEqual([]);
             });
 
             it('should return an empty array when no tasks match the given title', () => {
-                const pending = new Status(new StatusId, new StatusName('Pendiente'));
-                statusRepository.create(pending);
+                const pending = createStatus('Pendiente');
 
-                const hacerLaCama = new Task(new TaskId, pending.id(), new TaskTitle('Hacer la cama'));
-                const recogerLaRopa = new Task(new TaskId, pending.id(), new TaskTitle('Recoger la ropa'));
-                const aspirar = new Task(new TaskId, pending.id(), new TaskTitle('Aspirar'));
-                const fregar = new Task(new TaskId, pending.id(), new TaskTitle('Fregar'));
-                taskRepository.create(hacerLaCama);
-                taskRepository.create(recogerLaRopa);
-                taskRepository.create(aspirar);
-                taskRepository.create(fregar);
+                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
+                const aspirar = createTask(pending.id().value(), 'Aspirar');
+                const fregar = createTask(pending.id().value(), 'Fregar');
 
                 expect(taskRepository.getByFilters(new GetTasksCriteria(undefined, new TaskTitle('Cocina'))))
                     .toEqual([]);
             });
 
             it('should return an empty array when no tasks match the given status id and title', () => {
-                const pending = new Status(new StatusId, new StatusName('Pendiente'));
-                const done = new Status(new StatusId, new StatusName('Done'));
-                statusRepository.create(pending);
-                statusRepository.create(done);
+                const pending = createStatus('Pendiente');
+                const done = createStatus('Done');
 
-                const hacerLaCama = new Task(new TaskId, pending.id(), new TaskTitle('Hacer la cama'));
-                const recogerLaRopa = new Task(new TaskId, pending.id(), new TaskTitle('Recoger la ropa'));
-                const aspirar = new Task(new TaskId, pending.id(), new TaskTitle('Aspirar'));
-                const fregar = new Task(new TaskId, done.id(), new TaskTitle('Fregar'));
-                taskRepository.create(hacerLaCama);
-                taskRepository.create(recogerLaRopa);
-                taskRepository.create(aspirar);
-                taskRepository.create(fregar);
+                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
+                const aspirar = createTask(pending.id().value(), 'Aspirar');
+                const fregar = createTask(done.id().value(), 'Fregar');
 
                 expect(taskRepository.getByFilters(new GetTasksCriteria(done.id(), new TaskTitle('tenedor'))))
                     .toEqual([]);
             });
         });
     });
+
+    function createStatus(name: string): Status {
+        const status = new Status(new StatusId, new StatusName(name));
+        statusRepository.create(status);
+        return status;
+    }
+
+    function createTask(statusId: string, name: string): Task {
+        const task = new Task(new TaskId, new StatusId(statusId), new TaskTitle('Hacer la cama'));
+        taskRepository.create(task);
+        return task;
+    }
+
+
 }

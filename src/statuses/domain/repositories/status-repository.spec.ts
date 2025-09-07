@@ -14,8 +14,7 @@ export function execute(statusRepository: StatusRepository) {
 
         describe('create', () => {
             it('should store a status', () => {
-                const status = new Status(new StatusId, new StatusName('Pendiente'));
-                statusRepository.create(status);
+                const status = createStatus('Pendiente');
 
                 expect(statusRepository.findById(status.id()))
                     .toEqual(new Status(status.id(), status.name()));
@@ -24,8 +23,7 @@ export function execute(statusRepository: StatusRepository) {
 
         describe('findById', () => {
             it('should return the status when it exists', () => {
-                const status = new Status(new StatusId, new StatusName('Pendiente'));
-                statusRepository.create(status);
+                const status = createStatus('Pendiente');
 
                 expect(statusRepository.findById(status.id()))
                     .toEqual(status);
@@ -41,8 +39,7 @@ export function execute(statusRepository: StatusRepository) {
 
         describe('findByName', () => {
             it('should return the status when it exists', () => {
-                const status = new Status(new StatusId(), new StatusName('Pendiente'));
-                statusRepository.create(status);
+                const status = createStatus('Pendiente');
 
                 expect(statusRepository.findByName(status.name()))
                     .toEqual(new Status(status.id(), status.name()));
@@ -58,8 +55,7 @@ export function execute(statusRepository: StatusRepository) {
 
         describe('remove', () => {
             it('should remove a status when it exists', () => {
-                const status = new Status(new StatusId, new StatusName('Pendiente'));
-                statusRepository.create(status);
+                const status = createStatus('Pendiente');
                 statusRepository.remove(status.id());
 
                 expect(statusRepository.findById(status.id()))
@@ -78,13 +74,9 @@ export function execute(statusRepository: StatusRepository) {
 
         describe('getByFilters', () => {
             it('should return all statuses when no filters are provided', () => {
-                const pending = new Status(new StatusId, new StatusName('Pendiente'));
-                const inProgress = new Status(new StatusId, new StatusName('In progress'));
-                const done = new Status(new StatusId, new StatusName('Done'));
-
-                statusRepository.create(pending);
-                statusRepository.create(inProgress);
-                statusRepository.create(done);
+                const pending = createStatus('Pendiente');
+                const inProgress = createStatus('In progress');
+                const done = createStatus('Done');
 
                 expect(statusRepository.getByFilters(new GetStatusesCriteria()))
                     .toEqual([
@@ -95,15 +87,10 @@ export function execute(statusRepository: StatusRepository) {
             });
 
             it('should return only statuses that match the given name', () => {
-                const pending = new Status(new StatusId, new StatusName('Pending'));
-                const inProgress = new Status(new StatusId, new StatusName('In progress'));
-                const completed = new Status(new StatusId, new StatusName('Completed'));
-                const canceled = new Status(new StatusId, new StatusName('Canceled'));
-
-                statusRepository.create(pending);
-                statusRepository.create(inProgress);
-                statusRepository.create(completed);
-                statusRepository.create(canceled);
+                createStatus('Pending');
+                createStatus('In progress');
+                const completed = createStatus('Completed');
+                const canceled = createStatus('Canceled');
 
                 expect(statusRepository.getByFilters(new GetStatusesCriteria(new StatusName('ed'))))
                     .toEqual([
@@ -113,19 +100,20 @@ export function execute(statusRepository: StatusRepository) {
             });
 
             it('should return an empty array when no statuses match the given name', () => {
-                const pending = new Status(new StatusId, new StatusName('Pending'));
-                const inProgress = new Status(new StatusId, new StatusName('In progress'));
-                const completed = new Status(new StatusId, new StatusName('Completed'));
-                const canceled = new Status(new StatusId, new StatusName('Canceled'));
-
-                statusRepository.create(pending);
-                statusRepository.create(inProgress);
-                statusRepository.create(completed);
-                statusRepository.create(canceled);
+                createStatus('Pending');
+                createStatus('In progress');
+                createStatus('Completed');
+                createStatus('Canceled');
 
                 expect(statusRepository.getByFilters(new GetStatusesCriteria(new StatusName('Seller'))))
                     .toEqual([]);
             });
         });
     });
+
+    function createStatus(name: string): Status {
+        const status = new Status(new StatusId, new StatusName(name));
+        statusRepository.create(status);
+        return status;
+    }
 }
