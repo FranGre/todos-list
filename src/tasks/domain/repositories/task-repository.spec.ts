@@ -1,4 +1,3 @@
-import { InMemoryTaskRepository } from "../../../tasks/infrastructure/persistence/in-memory/in-memory-task-repository";
 import { TaskId } from "../value-objects/task-id/task-id";
 import { TaskTitle } from "../value-objects/task-title/task-title";
 import { Task } from "../task";
@@ -7,214 +6,213 @@ import { Status } from "../../../statuses/domain/status";
 import { StatusId } from "../../../statuses/domain/value-objects/status-id/status-id";
 import { StatusName } from "../../../statuses/domain/value-objects/status-name/status-name";
 import { GetTasksCriteria } from "../criteria/get-tasks-criteria";
-import { InMemoryStatusRepository } from "../../../statuses/infrastructure/persistence/in-memory/in-memory-status-repository";
 import { TaskRepository } from "./task-repository";
 
-export function execute(taskRepository: TaskRepository, statusRepository: StatusRepository) {
+export function execute(taskFactory: () => TaskRepository, statusFactory: () => StatusRepository) {
     describe('TaskRepository', () => {
+        let taskRepository: TaskRepository;
+        let statusRepository: StatusRepository;
 
         beforeEach(() => {
-            taskRepository = new InMemoryTaskRepository();
-            statusRepository = new InMemoryStatusRepository();
+            taskRepository = taskFactory();
+            statusRepository = statusFactory();
         });
 
         describe('create', () => {
-            it('should store a task', () => {
-                const pending = createStatus('Pendiente');
+            it('should store a task', async () => {
+                const pending = await createStatus('Pendiente');
 
-                const task = createTask(pending.id().value(), 'Hacer la cama');
+                const task = await createTask(pending.id().value(), 'Hacer la cama');
 
-                expect(taskRepository.findById(task.id()))
+                expect(await taskRepository.findById(task.id()))
                     .toEqual(task);
             });
         });
 
         describe('findById', () => {
-            it('should return the task when it exists', () => {
-                const pending = createStatus('Pendiente');
+            it('should return the task when it exists', async () => {
+                const pending = await createStatus('Pendiente');
 
-                const task = createTask(pending.id().value(), 'Hacer la cama');
+                const task = await createTask(pending.id().value(), 'Hacer la cama');
 
-                expect(taskRepository.findById(task.id()))
+                expect(await taskRepository.findById(task.id()))
                     .toEqual(task);
             });
 
-            it('should return null when it does not exist', () => {
+            it('should return null when it does not exist', async () => {
                 const notExistentId = new TaskId();
 
-                expect(taskRepository.findById(notExistentId))
+                expect(await taskRepository.findById(notExistentId))
                     .toBeNull();
             });
         });
 
         describe('remove', () => {
-            it('should remove a task when it exists', () => {
-                const pending = createStatus('Pendiente');
+            it('should remove a task when it exists', async () => {
+                const pending = await createStatus('Pendiente');
 
-                const task = createTask(pending.id().value(), 'Hacer la cama');
+                const task = await createTask(pending.id().value(), 'Hacer la cama');
 
-                taskRepository.remove(task.id());
+                await taskRepository.remove(task.id());
 
-                expect(taskRepository.findById(task.id()))
+                expect(await taskRepository.findById(task.id()))
                     .toBeNull();
             });
 
-            it('should do nothing when status does not exist', () => {
+            it('should do nothing when status does not exist', async () => {
                 const notExistentId = new TaskId();
 
-                taskRepository.remove(notExistentId);
+                await taskRepository.remove(notExistentId);
 
-                expect(taskRepository.findById(notExistentId))
+                expect(await taskRepository.findById(notExistentId))
                     .toBeNull();
             });
         });
 
         describe('getByStatusId', () => {
-            it('should return only tasks that match the given status id', () => {
-                const pending = createStatus('Pendiente');
-                const completed = createStatus('Completed');
+            it('should return only tasks that match the given status id', async () => {
+                const pending = await createStatus('Pendiente');
+                const completed = await createStatus('Completed');
 
-                const hacerLaCama = createTask(completed.id().value(), 'Hacer la cama');
-                const limpiarElPolvo = createTask(completed.id().value(), 'Limpiar el polvo');
-                const aspirar = createTask(pending.id().value(), 'aspirar');
-                const mochar = createTask(pending.id().value(), 'mochar');
+                const hacerLaCama = await createTask(completed.id().value(), 'Hacer la cama');
+                const limpiarElPolvo = await createTask(completed.id().value(), 'Limpiar el polvo');
+                const aspirar = await createTask(pending.id().value(), 'aspirar');
+                const mochar = await createTask(pending.id().value(), 'mochar');
 
-                expect(taskRepository.getByFilters(new GetTasksCriteria(new StatusId(pending.id().value()))))
+                expect(await taskRepository.getByFilters(new GetTasksCriteria(new StatusId(pending.id().value()))))
                     .toEqual([
                         aspirar,
                         mochar
                     ]);
             });
 
-            it('should return an empty array when no statuses match the given name', () => {
-                const pending = createStatus('Pendiente');
-                const completed = createStatus('Completed');
-                const cancelled = createStatus('Cancelled');
+            it('should return an empty array when no statuses match the given name', async () => {
+                const pending = await createStatus('Pendiente');
+                const completed = await createStatus('Completed');
+                const cancelled = await createStatus('Cancelled');
 
-                const hacerLaCama = createTask(completed.id().value(), 'Hacer la cama');
-                const limpiarElPolvo = createTask(completed.id().value(), 'Limpiar el polvo');
-                const aspirar = createTask(pending.id().value(), 'aspirar');
-                const mochar = createTask(pending.id().value(), 'mochar');
+                const hacerLaCama = await createTask(completed.id().value(), 'Hacer la cama');
+                const limpiarElPolvo = await createTask(completed.id().value(), 'Limpiar el polvo');
+                const aspirar = await createTask(pending.id().value(), 'aspirar');
+                const mochar = await createTask(pending.id().value(), 'mochar');
 
-                expect(taskRepository.getByFilters(new GetTasksCriteria(new StatusId(cancelled.id().value()))))
+                expect(await taskRepository.getByFilters(new GetTasksCriteria(new StatusId(cancelled.id().value()))))
                     .toEqual([]);
             });
 
         });
 
         describe('getByFilters', () => {
-            it('should return all tasks when no filters are provided', () => {
-                const pending = createStatus('Pendiente');
+            it('should return all tasks when no filters are provided', async () => {
+                const pending = await createStatus('Pendiente');
 
-                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
-                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
+                const hacerLaCama = await createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = await createTask(pending.id().value(), 'Recoger la ropa');
 
-                expect(taskRepository.getByFilters(new GetTasksCriteria()))
+                expect(await taskRepository.getByFilters(new GetTasksCriteria()))
                     .toEqual([
                         hacerLaCama,
                         recogerLaRopa
                     ]);
             });
 
-            it('should return only tasks that match the given status id', () => {
-                const pending = createStatus('Pendiente');
-                const done = createStatus('Done');
+            it('should return only tasks that match the given status id', async () => {
+                const pending = await createStatus('Pendiente');
+                const done = await createStatus('Done');
 
-                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
-                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
-                const aspirar = createTask(done.id().value(), 'Aspirar');
-                const fregar = createTask(done.id().value(), 'Fregar');
+                const hacerLaCama = await createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = await createTask(pending.id().value(), 'Recoger la ropa');
+                const aspirar = await createTask(done.id().value(), 'Aspirar');
+                const fregar = await createTask(done.id().value(), 'Fregar');
 
-                expect(taskRepository.getByFilters(new GetTasksCriteria(pending.id())))
+                expect(await taskRepository.getByFilters(new GetTasksCriteria(pending.id())))
                     .toEqual([
                         hacerLaCama,
                         recogerLaRopa
                     ]);
             });
 
-            it('should return only tasks that match the given title', () => {
-                const pending = createStatus('Pendiente');
-                const done = createStatus('Done');
+            it('should return only tasks that match the given title', async () => {
+                const pending = await createStatus('Pendiente');
+                const done = await createStatus('Done');
 
-                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
-                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
-                const aspirar = createTask(done.id().value(), 'Aspirar');
-                const fregar = createTask(done.id().value(), 'Fregar');
+                const hacerLaCama = await createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = await createTask(pending.id().value(), 'Recoger la ropa');
+                const aspirar = await createTask(done.id().value(), 'Aspirar');
+                const fregar = await createTask(done.id().value(), 'Fregar');
 
-                expect(taskRepository.getByFilters(new GetTasksCriteria(undefined, new TaskTitle('la'))))
+                expect(await taskRepository.getByFilters(new GetTasksCriteria(undefined, new TaskTitle('la'))))
                     .toEqual([
                         hacerLaCama,
                         recogerLaRopa
                     ]);
             });
 
-            it('should return only tasks that match the given status id and title', () => {
-                const pending = createStatus('Pendiente');
-                const done = createStatus('Done');
+            it('should return only tasks that match the given status id and title', async () => {
+                const pending = await createStatus('Pendiente');
+                const done = await createStatus('Done');
 
-                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
-                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
-                const aspirar = createTask(done.id().value(), 'Aspirar');
-                const fregar = createTask(done.id().value(), 'Fregar');
+                const hacerLaCama = await createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = await createTask(pending.id().value(), 'Recoger la ropa');
+                const aspirar = await createTask(done.id().value(), 'Aspirar');
+                const fregar = await createTask(done.id().value(), 'Fregar');
 
-                expect(taskRepository.getByFilters(new GetTasksCriteria(pending.id(), new TaskTitle('cama'))))
+                expect(await taskRepository.getByFilters(new GetTasksCriteria(pending.id(), new TaskTitle('cama'))))
                     .toEqual([
                         hacerLaCama
                     ]);
             });
 
 
-            it('should return an empty array when no tasks match the given status id', () => {
-                const pending = createStatus('Pendiente');
-                const done = createStatus('Done');
+            it('should return an empty array when no tasks match the given status id', async () => {
+                const pending = await createStatus('Pendiente');
+                const done = await createStatus('Done');
 
-                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
-                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
-                const aspirar = createTask(pending.id().value(), 'Aspirar');
-                const fregar = createTask(pending.id().value(), 'Fregar');
+                const hacerLaCama = await createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = await createTask(pending.id().value(), 'Recoger la ropa');
+                const aspirar = await createTask(pending.id().value(), 'Aspirar');
+                const fregar = await createTask(pending.id().value(), 'Fregar');
 
-                expect(taskRepository.getByFilters(new GetTasksCriteria(done.id())))
+                expect(await taskRepository.getByFilters(new GetTasksCriteria(done.id())))
                     .toEqual([]);
             });
 
-            it('should return an empty array when no tasks match the given title', () => {
-                const pending = createStatus('Pendiente');
+            it('should return an empty array when no tasks match the given title', async () => {
+                const pending = await createStatus('Pendiente');
 
-                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
-                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
-                const aspirar = createTask(pending.id().value(), 'Aspirar');
-                const fregar = createTask(pending.id().value(), 'Fregar');
+                const hacerLaCama = await createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = await createTask(pending.id().value(), 'Recoger la ropa');
+                const aspirar = await createTask(pending.id().value(), 'Aspirar');
+                const fregar = await createTask(pending.id().value(), 'Fregar');
 
-                expect(taskRepository.getByFilters(new GetTasksCriteria(undefined, new TaskTitle('Cocina'))))
+                expect(await taskRepository.getByFilters(new GetTasksCriteria(undefined, new TaskTitle('Cocina'))))
                     .toEqual([]);
             });
 
-            it('should return an empty array when no tasks match the given status id and title', () => {
-                const pending = createStatus('Pendiente');
-                const done = createStatus('Done');
+            it('should return an empty array when no tasks match the given status id and title', async () => {
+                const pending = await createStatus('Pendiente');
+                const done = await createStatus('Done');
 
-                const hacerLaCama = createTask(pending.id().value(), 'Hacer la cama');
-                const recogerLaRopa = createTask(pending.id().value(), 'Recoger la ropa');
-                const aspirar = createTask(pending.id().value(), 'Aspirar');
-                const fregar = createTask(done.id().value(), 'Fregar');
+                const hacerLaCama = await createTask(pending.id().value(), 'Hacer la cama');
+                const recogerLaRopa = await createTask(pending.id().value(), 'Recoger la ropa');
+                const aspirar = await createTask(pending.id().value(), 'Aspirar');
+                const fregar = await createTask(done.id().value(), 'Fregar');
 
-                expect(taskRepository.getByFilters(new GetTasksCriteria(done.id(), new TaskTitle('tenedor'))))
+                expect(await taskRepository.getByFilters(new GetTasksCriteria(done.id(), new TaskTitle('tenedor'))))
                     .toEqual([]);
             });
         });
+
+        async function createStatus(name: string): Promise<Status> {
+            const status = new Status(new StatusId, new StatusName(name));
+            await statusRepository.create(status);
+            return status;
+        }
+
+        async function createTask(statusId: string, name: string): Promise<Task> {
+            const task = new Task(new TaskId, new StatusId(statusId), new TaskTitle(name));
+            await taskRepository.create(task);
+            return task;
+        }
     });
-
-    function createStatus(name: string): Status {
-        const status = new Status(new StatusId, new StatusName(name));
-        statusRepository.create(status);
-        return status;
-    }
-
-    function createTask(statusId: string, name: string): Task {
-        const task = new Task(new TaskId, new StatusId(statusId), new TaskTitle('Hacer la cama'));
-        taskRepository.create(task);
-        return task;
-    }
-
-
 }

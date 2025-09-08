@@ -2,7 +2,4 @@ import { InMemoryStatusRepository } from '../../../../statuses/infrastructure/pe
 import { execute } from '../../../domain/repositories/task-repository.spec';
 import { InMemoryTaskRepository } from './in-memory-task-repository';
 
-const inMemoryStatusRepository = new InMemoryStatusRepository();
-const inMemoryTaskRepository = new InMemoryTaskRepository();
-
-execute(inMemoryTaskRepository, inMemoryStatusRepository);
+execute(() => new InMemoryTaskRepository(), () => new InMemoryStatusRepository());
