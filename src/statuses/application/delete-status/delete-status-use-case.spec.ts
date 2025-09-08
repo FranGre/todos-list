@@ -38,40 +38,40 @@ describe('DeleteStatusUseCase', () => {
         );
     });
 
-    it('should delete a status when status exists and has no associated tasks', () => {
-        const status = createStatus('Pendiente');
+    it('should delete a status when status exists and has no associated tasks', async () => {
+        const status = await createStatus('Pendiente');
 
-        expect(deleteStatus(status.id))
+        expect(await deleteStatus(status.id))
             .toEqual({ id: status.id });
     });
 
     describe('errros', () => {
-        it('should throw error when status has associated tasks', () => {
-            const status = createStatus('Pendiente');
+        it('should throw error when status has associated tasks', async () => {
+            const status = await createStatus('Pendiente');
 
-            createTask(status.id, 'Hacer la cama');
+            await createTask(status.id, 'Hacer la cama');
 
-            expect(() => deleteStatus(status.id))
+            expect(async () => await deleteStatus(status.id))
                 .toThrow(StatusHasAssociatedTasksError);
         });
 
-        it('should throw error when status does not exists', () => {
+        it('should throw error when status does not exists', async () => {
             const nonExistentStatusId = '9f9f23f7-53ee-4986-aad8-bfa0305585e7';
 
-            expect(() => deleteStatus(nonExistentStatusId))
+            expect(async () => await deleteStatus(nonExistentStatusId))
                 .toThrow(StatusNotFoundByIdError);
         });
     });
 
-    function createStatus(name: string): CreateStatusResult {
-        return createStatusUseCase.execute(new CreateStatusCommand(name));
+    async function createStatus(name: string): Promise<CreateStatusResult> {
+        return await createStatusUseCase.execute(new CreateStatusCommand(name));
     }
 
-    function deleteStatus(id: string): DeleteStatusResult {
-        return deleteStatusUseCase.execute(new DeleteStatusCommand(id));
+    async function deleteStatus(id: string): Promise<DeleteStatusResult> {
+        return await deleteStatusUseCase.execute(new DeleteStatusCommand(id));
     }
 
-    function createTask(statusId: string, title: string): CreateTaskResult {
-        return createTaskUseCase.execute(new CreateTaskCommand(statusId, title));
+    async function createTask(statusId: string, title: string): Promise<CreateTaskResult> {
+        return await createTaskUseCase.execute(new CreateTaskCommand(statusId, title));
     }
 });

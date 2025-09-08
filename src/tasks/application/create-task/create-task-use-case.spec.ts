@@ -26,9 +26,9 @@ describe('CreateTaskUseCase', () => {
         createTaskUseCase = new CreateTaskUseCase(taskRepository, new EnsureStatusExistsById(statusRepository));
     });
 
-    it('should create a task when recieves valid inputs', () => {
-        const status = createStatus('Pendiente');
-        const task = createTask(status.id, 'pasar la aspiradora');
+    it('should create a task when recieves valid inputs', async () => {
+        const status = await createStatus('Pendiente');
+        const task = await createTask(status.id, 'pasar la aspiradora');
         expect(task)
             .toEqual({ id: task.id, statusId: task.statusId, title: task.title });
     });
@@ -41,8 +41,8 @@ describe('CreateTaskUseCase', () => {
         });
     });
 
-    function createStatus(name: string): CreateStatusResult {
-        return createStatusUseCase.execute(new CreateStatusCommand(name));
+    async function createStatus(name: string): Promise<CreateStatusResult> {
+        return await createStatusUseCase.execute(new CreateStatusCommand(name));
     }
 
     function createTask(statusId: string, title: string): CreateTaskResult {

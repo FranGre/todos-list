@@ -32,12 +32,12 @@ describe('GetTaskUseCase', () => {
         getTaskUseCase = new GetTaskUseCase(new EnsureTaskExistsById(taskRepository));
     });
 
-    it('should return a task when task exists', () => {
-        const pendingStatus = createStatus('Pendiente');
+    it('should return a task when task exists', async () => {
+        const pendingStatus = await createStatus('Pendiente');
 
-        const task = createTask(pendingStatus.id, 'pasar la aspiradora');
+        const task = await createTask(pendingStatus.id, 'pasar la aspiradora');
 
-        expect(getTask(task.id))
+        expect(await getTask(task.id))
             .toEqual({
                 id: task.id,
                 statusId: task.statusId,
@@ -53,8 +53,8 @@ describe('GetTaskUseCase', () => {
         });
     });
 
-    function createStatus(name: string): CreateStatusResult {
-        return createStatusUseCase.execute(new CreateStatusCommand(name));
+    async function createStatus(name: string): Promise<CreateStatusResult> {
+        return await createStatusUseCase.execute(new CreateStatusCommand(name));
     }
 
     function createTask(statusId: string, title: string): CreateTaskResult {

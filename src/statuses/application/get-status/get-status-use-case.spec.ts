@@ -20,10 +20,10 @@ describe('GetStatusUseCase', () => {
         getStatusUseCase = new GetStatusUseCase(new EnsureStatusExistsById(statusRepository));
     });
 
-    it('should return a status when status exists', () => {
-        const status = createStatus('Pendiente');
+    it('should return a status when status exists', async () => {
+        const status = await createStatus('Pendiente');
 
-        expect(getStatus(status.id))
+        expect(await getStatus(status.id))
             .toEqual({
                 id: status.id,
                 name: status.name
@@ -38,11 +38,11 @@ describe('GetStatusUseCase', () => {
         });
     });
 
-    function createStatus(name: string): CreateStatusResult {
-        return createStatusUseCase.execute(new CreateStatusCommand(name));
+    async function createStatus(name: string): Promise<CreateStatusResult> {
+        return await createStatusUseCase.execute(new CreateStatusCommand(name));
     }
 
-    function getStatus(id: string): GetStatusResult {
-        return getStatusUseCase.execute(new GetStatusQuery(id));
+    async function getStatus(id: string): Promise<GetStatusResult> {
+        return await getStatusUseCase.execute(new GetStatusQuery(id));
     }
 });

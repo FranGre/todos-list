@@ -14,13 +14,13 @@ export class DeleteStatusUseCase {
         private readonly ensureStatusHasNoAssociatedTasks: EnsureStatusHasNoAssociatedTasks
     ) { }
 
-    execute(command: DeleteStatusCommand): DeleteStatusResult {
+    async execute(command: DeleteStatusCommand): Promise<DeleteStatusResult> {
         const statusId = new StatusId(command.id);
 
-        const status = this.ensureStatusExistsById.execute(statusId);
-        this.ensureStatusHasNoAssociatedTasks.execute(statusId);
+        const status = await this.ensureStatusExistsById.execute(statusId);
+        await this.ensureStatusHasNoAssociatedTasks.execute(statusId);
 
-        this.statusRepository.remove(status.id());
+        await this.statusRepository.remove(status.id());
 
         return DeleteStatusMapper.toResult(status);
     }

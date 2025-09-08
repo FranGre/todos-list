@@ -7,8 +7,8 @@ export class EnsureStatusExistsById {
 
     constructor(private readonly statusRepository: StatusRepository) { }
 
-    execute(statusId: StatusId): Status {
-        const status = this.statusRepository.findById(statusId);
+    async execute(statusId: StatusId): Promise<Status> {
+        const status = await this.statusRepository.findById(statusId);
         if (!status) {
             throw new StatusNotFoundByIdError(statusId.value());
         }

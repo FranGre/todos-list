@@ -14,8 +14,8 @@ describe('CreateStatusUseCase', () => {
         createStatusUseCase = new CreateStatusUseCase(statusRepository);
     });
 
-    it('should create a status when receives valid name', () => {
-        const status = createStatus('Pendiente');
+    it('should create a status when receives valid name', async () => {
+        const status = await createStatus('Pendiente');
         expect(status)
             .toEqual({ id: status.id, name: status.name });
     });
@@ -28,7 +28,7 @@ describe('CreateStatusUseCase', () => {
         });
     });
 
-    function createStatus(name: string): CreateStatusResult {
-        return createStatusUseCase.execute(new CreateStatusCommand(name));
+    async function createStatus(name: string): Promise<CreateStatusResult> {
+        return await createStatusUseCase.execute(new CreateStatusCommand(name));
     }
 });

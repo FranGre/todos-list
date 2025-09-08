@@ -11,11 +11,11 @@ export class CreateStatusUseCase {
 
     constructor(private statusRepository: StatusRepository) {}
 
-    execute(command: CreateStatusCommand): CreateStatusResult {
+    async execute(command: CreateStatusCommand): Promise<CreateStatusResult> {
         const statusId = new StatusId();
         const statusName = new StatusName(command.name);
 
-        if (this.statusRepository.findByName(statusName)) {
+        if (await this.statusRepository.findByName(statusName)) {
             throw new StatusNameAlreadyExistsError(statusName.value());
         }
         

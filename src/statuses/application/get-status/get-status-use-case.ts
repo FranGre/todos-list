@@ -8,10 +8,10 @@ export class GetStatusUseCase {
 
     constructor(private readonly ensureStatusExistsById: EnsureStatusExistsById) { }
 
-    execute(query: GetStatusQuery): GetStatusResult {
+    async execute(query: GetStatusQuery): Promise<GetStatusResult> {
         const statusId = new StatusId(query.id);
 
-        const status = this.ensureStatusExistsById.execute(statusId);
+        const status = await this.ensureStatusExistsById.execute(statusId);
 
         return GetStatusMapper.toResult(status);
     }

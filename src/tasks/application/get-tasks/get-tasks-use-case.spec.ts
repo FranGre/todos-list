@@ -33,14 +33,14 @@ describe('GetTasksUseCase', () => {
     });
 
     describe('filters', () => {
-        it('should return all tasks', () => {
-            const pendingStatus = createStatus('Pendiente');
+        it('should return all tasks', async () => {
+            const pendingStatus = await createStatus('Pendiente');
 
-            const task1 = createTask(pendingStatus.id, 'limpiar el polvo');
-            const task2 = createTask(pendingStatus.id, 'pasar la aspiradora');
-            const task3 = createTask(pendingStatus.id, 'mochar');
+            const task1 = await createTask(pendingStatus.id, 'limpiar el polvo');
+            const task2 = await createTask(pendingStatus.id, 'pasar la aspiradora');
+            const task3 = await createTask(pendingStatus.id, 'mochar');
 
-            expect(getTasks())
+            expect(await getTasks())
                 .toEqual(
                     [
                         {
@@ -62,16 +62,16 @@ describe('GetTasksUseCase', () => {
                 );
         });
 
-        it('should return all tasks when filtered by status id', () => {
-            const pendingStatus = createStatus('Pendiente');
-            const doneStatus = createStatus('Done');
+        it('should return all tasks when filtered by status id', async () => {
+            const pendingStatus = await createStatus('Pendiente');
+            const doneStatus = await createStatus('Done');
 
-            const task1 = createTask(pendingStatus.id, 'limpiar el cuarto');
-            const task2 = createTask(pendingStatus.id, 'limpiar el aseo');
-            const task3 = createTask(pendingStatus.id, 'limpiar la cocina');
-            createTask(doneStatus.id, 'comprar pan');
+            const task1 = await createTask(pendingStatus.id, 'limpiar el cuarto');
+            const task2 = await createTask(pendingStatus.id, 'limpiar el aseo');
+            const task3 = await createTask(pendingStatus.id, 'limpiar la cocina');
+            await createTask(doneStatus.id, 'comprar pan');
 
-            expect(getTasks(pendingStatus.id, undefined))
+            expect(await getTasks(pendingStatus.id, undefined))
                 .toEqual(
                     [
                         {
@@ -93,16 +93,16 @@ describe('GetTasksUseCase', () => {
                 );
         });
 
-        it('should return all tasks when filtered by title', () => {
-            const pendingStatus = createStatus('Pendiente');
-            const doneStatus = createStatus('Done');
+        it('should return all tasks when filtered by title', async () => {
+            const pendingStatus = await createStatus('Pendiente');
+            const doneStatus = await createStatus('Done');
 
-            const task1 = createTask(pendingStatus.id, 'limpiar el cuarto');
-            const task2 = createTask(pendingStatus.id, 'limpiar el aseo');
-            const task3 = createTask(pendingStatus.id, 'limpiar la cocina');
-            createTask(doneStatus.id, 'comprar pan');
+            const task1 = await createTask(pendingStatus.id, 'limpiar el cuarto');
+            const task2 = await createTask(pendingStatus.id, 'limpiar el aseo');
+            const task3 = await createTask(pendingStatus.id, 'limpiar la cocina');
+            await createTask(doneStatus.id, 'comprar pan');
 
-            expect(getTasks(undefined, 'limpiar'))
+            expect(await getTasks(undefined, 'limpiar'))
                 .toEqual(
                     [
                         {
@@ -124,17 +124,17 @@ describe('GetTasksUseCase', () => {
                 );
         });
 
-        it('should return all tasks when filtered by status id and title', () => {
-            const pendingStatus = createStatus('Pendiente');
-            const doneStatus = createStatus('Done');
+        it('should return all tasks when filtered by status id and title', async () => {
+            const pendingStatus = await createStatus('Pendiente');
+            const doneStatus = await createStatus('Done');
 
-            const task1 = createTask(doneStatus.id, 'limpiar el cuarto de fran');
-            const task2 = createTask(doneStatus.id, 'limpiar la cocina');
-            createTask(pendingStatus.id, 'limpiar el cuarto de j');
-            createTask(pendingStatus.id, 'limpar el comedor');
-            createTask(doneStatus.id, 'comprar pan');
+            const task1 = await createTask(doneStatus.id, 'limpiar el cuarto de fran');
+            const task2 = await createTask(doneStatus.id, 'limpiar la cocina');
+            await createTask(pendingStatus.id, 'limpiar el cuarto de j');
+            await createTask(pendingStatus.id, 'limpar el comedor');
+            await createTask(doneStatus.id, 'comprar pan');
 
-            expect(getTasks(doneStatus.id, 'limpiar'))
+            expect(await getTasks(doneStatus.id, 'limpiar'))
                 .toEqual(
                     [
                         {
@@ -151,8 +151,8 @@ describe('GetTasksUseCase', () => {
                 );
         });
 
-        it('should return an empty array when no task title matches', () => {
-            const pendingStatus = createStatus('Pendiente');
+        it('should return an empty array when no task title matches', async () => {
+            const pendingStatus = await createStatus('Pendiente');
 
             createTask(pendingStatus.id, 'limpiar el polvo');
             createTask(pendingStatus.id, 'pasar la aspiradora');
@@ -160,7 +160,7 @@ describe('GetTasksUseCase', () => {
 
             const titleNoCoindices = 'jugar';
 
-            expect(getTasks(undefined, titleNoCoindices))
+            expect(await getTasks(undefined, titleNoCoindices))
                 .toEqual([]);
         });
     });
@@ -181,8 +181,8 @@ describe('GetTasksUseCase', () => {
         });
     });
 
-    function createStatus(name: string): CreateStatusResult {
-        return createStatusUseCase.execute(new CreateStatusCommand(name));
+    async function createStatus(name: string): Promise<CreateStatusResult> {
+        return await createStatusUseCase.execute(new CreateStatusCommand(name));
     }
 
     function createTask(statusId: string, title: string): CreateTaskResult {

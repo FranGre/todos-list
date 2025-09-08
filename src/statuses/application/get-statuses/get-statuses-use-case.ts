@@ -10,14 +10,14 @@ export class GetStatusesUseCase {
 
     constructor(private readonly statusRepository: StatusRepository) { }
 
-    execute(query: GetStatusesQuery): GetStatusesResult[] {
+    async execute(query: GetStatusesQuery): Promise<GetStatusesResult[]> {
         let statusName: StatusName | undefined;
 
         if (query.name) {
             statusName = new StatusName(query.name);
         }
 
-        const statuses: Status[] = this.statusRepository.getByFilters(new GetStatusesCriteria(statusName));
+        const statuses: Status[] = await this.statusRepository.getByFilters(new GetStatusesCriteria(statusName));
 
         return GetStatusesMapper.toResults(statuses);
     }

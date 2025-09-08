@@ -37,39 +37,39 @@ describe('ChangeTaskStatusUseCase', () => {
         );
     });
 
-    it('should change task status when receieves valid inputs', () => {
-        const pendingStatus = createStatus('Pendiente');
-        const doneStatus = createStatus('Realizada');
+    it('should change task status when receieves valid inputs', async () => {
+        const pendingStatus = await createStatus('Pendiente');
+        const doneStatus = await createStatus('Realizada');
 
-        const task = createTask(pendingStatus.id, 'pasar la aspiradora');
+        const task = await createTask(pendingStatus.id, 'pasar la aspiradora');
 
-        expect(changeTaskStatus(task.id, doneStatus.id))
+        expect(await changeTaskStatus(task.id, doneStatus.id))
             .toEqual({ id: task.id, statusId: doneStatus.id, title: task.title });
     });
 
     describe('errors', () => {
-        it('should throw error when task id not exists', () => {
+        it('should throw error when task id not exists', async () => {
             const nonExistentTaskId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
-            const status = createStatus('Pendiente');
+            const status = await createStatus('Pendiente');
 
-            expect(() => changeTaskStatus(nonExistentTaskId, status.id))
+            expect(async () => await changeTaskStatus(nonExistentTaskId, status.id))
                 .toThrow(TaskNotFoundByIdError);
         });
 
-        it('should throw error when status id not exists', () => {
-            const status = createStatus('Pendiente');
+        it('should throw error when status id not exists', async () => {
+            const status = await createStatus('Pendiente');
 
-            const task = createTask(status.id, 'pasar la aspiradora');
+            const task = await createTask(status.id, 'pasar la aspiradora');
 
             const nonExistentStatuskId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
 
-            expect(() => changeTaskStatus(task.id, nonExistentStatuskId))
+            expect(async () => await changeTaskStatus(task.id, nonExistentStatuskId))
                 .toThrow(StatusNotFoundByIdError);
         });
     });
 
-    function createStatus(name: string): CreateStatusResult {
-        return createStatusUseCase.execute(new CreateStatusCommand(name));
+    async function createStatus(name: string): Promise<CreateStatusResult> {
+        return await createStatusUseCase.execute(new CreateStatusCommand(name));
     }
 
     function createTask(statusId: string, title: string): CreateTaskResult {

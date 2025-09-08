@@ -19,13 +19,13 @@ describe('GetStatusesUseCase', () => {
     });
 
     describe('filters', () => {
-        it('should return all status', () => {
-            const pendingStatus = createStatus('Pendiente');
-            const inProgressStatus = createStatus('En progreso');
-            const doneStatus = createStatus('Realizado');
-            const inRevissionStatus = createStatus('Revisión');
+        it('should return all status', async () => {
+            const pendingStatus = await createStatus('Pendiente');
+            const inProgressStatus = await createStatus('En progreso');
+            const doneStatus = await createStatus('Realizado');
+            const inRevissionStatus = await createStatus('Revisión');
 
-            expect(getStatuses())
+            expect(await getStatuses())
                 .toEqual(
                     [
                         {
@@ -48,13 +48,13 @@ describe('GetStatusesUseCase', () => {
                 );
         });
 
-        it('should return statuses when filtered by name', () => {
-            const pendingStatus = createStatus('Pendiente');
-            const inProgressStatus = createStatus('En progreso');
-            const doneStatus = createStatus('Realizado');
-            const inRevissionStatus = createStatus('En Revisión');
+        it('should return statuses when filtered by name', async () => {
+            const pendingStatus = await createStatus('Pendiente');
+            const inProgressStatus = await createStatus('En progreso');
+            const doneStatus = await createStatus('Realizado');
+            const inRevissionStatus = await createStatus('En Revisión');
 
-            expect(getStatuses('en'))
+            expect(await getStatuses('en'))
                 .toEqual(
                     [
                         {
@@ -86,11 +86,11 @@ describe('GetStatusesUseCase', () => {
         });
     });
 
-    function createStatus(name: string): CreateStatusResult {
-        return createStatusUseCase.execute(new CreateStatusCommand(name));
+    async function createStatus(name: string): Promise<CreateStatusResult> {
+        return await createStatusUseCase.execute(new CreateStatusCommand(name));
     }
 
-    function getStatuses(name?: string): GetStatusesResult[] {
-        return getStatusesUseCase.execute(new GetStatusesQuery(name));
+    async function getStatuses(name?: string): Promise<GetStatusesResult[]> {
+        return await getStatusesUseCase.execute(new GetStatusesQuery(name));
     }
 });

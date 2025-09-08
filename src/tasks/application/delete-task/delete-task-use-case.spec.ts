@@ -33,35 +33,35 @@ describe('DeleteTaskUseCase', () => {
         deleteTaskUseCase = new DeleteTaskUseCase(taskRepository, new EnsureTaskExistsById(taskRepository));
     });
 
-    it('should delete a task when task exists', () => {
-        const createStatusResult = createStatus('Pendiente');
-        const createTaskResult = createTask(createStatusResult.id, 'pasar la aspiradora');
+    it('should delete a task when task exists', async () => {
+        const createStatusResult = await createStatus('Pendiente');
+        const createTaskResult = await createTask(createStatusResult.id, 'pasar la aspiradora');
 
-        expect(deleteTask(createTaskResult.id))
+        expect(await deleteTask(createTaskResult.id))
             .toEqual({ id: createTaskResult.id });
 
-        expect(taskRepository.findById(new TaskId(createTaskResult.id)))
+        expect(await taskRepository.findById(new TaskId(createTaskResult.id)))
             .toBeNull();
     });
 
     describe('errors', () => {
-        it('should throw error when task id not exists', () => {
+        it('should throw error when task id not exists', async () => {
             const notExistsTaskId = 'b278bf16-7673-4e0e-b163-19e9d90fbd3b';
-            expect(() => deleteTask(notExistsTaskId))
+            expect(async () => await deleteTask(notExistsTaskId))
                 .toThrow(TaskNotFoundByIdError);
         });
     });
 
-    function createStatus(name: string): CreateStatusResult {
-        return createStatusUseCase.execute(new CreateStatusCommand(name));
+    async function createStatus(name: string): Promise<CreateStatusResult> {
+        return await createStatusUseCase.execute(new CreateStatusCommand(name));
     }
 
-    function createTask(statusId: string, title: string): CreateTaskResult {
-        return createTaskUseCase.execute(new CreateTaskCommand(statusId, title));
+    async function createTask(statusId: string, title: string): Promise<CreateTaskResult> {
+        return await createTaskUseCase.execute(new CreateTaskCommand(statusId, title));
     }
 
-    function deleteTask(id): DeleteTaskResult {
-        return deleteTaskUseCase.execute(new DeleteTaskCommand(id));
+    async function deleteTask(id): Promise<DeleteTaskResult> {
+        return await deleteTaskUseCase.execute(new DeleteTaskCommand(id));
     }
 
 });
