@@ -5,14 +5,14 @@ import { StatusName } from "../value-objects/status-name/status-name";
 
 export interface StatusRepository {
 
-    create(status: Status): void;
+    create(status: Status): Promise<void>;
 
-    findById(statusId: StatusId): Status | null;
+    findById(statusId: StatusId): Promise<Status | null>;
 
-    findByName(statusName: StatusName): Status | null;
+    findByName(statusName: StatusName): Promise<Status | null>;
 
-    remove(statusId: StatusId): void;
+    remove(statusId: StatusId): Promise<void>;
 
-    getByFilters(criteria: GetStatusesCriteria): Status[];
+    getByFilters(criteria: GetStatusesCriteria): Promise<Status[]>;
 
 }

@@ -8,11 +8,11 @@ export class InMemoryStatusRepository implements StatusRepository {
 
     public statuses: Status[] = [];
 
-    create(status: Status): void {
+    async create(status: Status): Promise<void> {
         this.statuses.push(status);
     }
 
-    findById(statusId: StatusId): Status | null {
+    async findById(statusId: StatusId): Promise<Status | null> {
         for (const status of this.statuses) {
             if (status.id().value() == statusId.value()) {
                 return status;
@@ -22,7 +22,7 @@ export class InMemoryStatusRepository implements StatusRepository {
         return null;
     }
 
-    findByName(statusName: StatusName): Status | null {
+    async findByName(statusName: StatusName): Promise<Status | null> {
         for (const status of this.statuses) {
             if (status.name().value() == statusName.value()) {
                 return status;
@@ -32,11 +32,11 @@ export class InMemoryStatusRepository implements StatusRepository {
         return null;
     }
 
-    remove(statusId: StatusId): void {
+    async remove(statusId: StatusId): Promise<void> {
         this.statuses = this.statuses.filter((status) => status.id().value() != statusId.value());
     }
 
-    getByFilters(criteria: GetStatusesCriteria): Status[] {
+    async getByFilters(criteria: GetStatusesCriteria): Promise<Status[]> {
         let statuses: Status[] = [];
 
         const hasName = criteria.name !== undefined;
