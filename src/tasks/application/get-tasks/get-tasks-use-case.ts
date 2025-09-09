@@ -15,7 +15,7 @@ export class GetTasksUseCase {
         private readonly ensureStatusExistsById: EnsureStatusExistsById
     ) { }
 
-    execute(query: GetTasksQuery): GetTasksResult[] {
+    async execute(query: GetTasksQuery): Promise<GetTasksResult[]> {
         let statusId: StatusId | undefined;
         let taskTitle: TaskTitle | undefined;
 
@@ -27,10 +27,10 @@ export class GetTasksUseCase {
         }
 
         if (statusId) {
-            this.ensureStatusExistsById.execute(statusId);
+            await this.ensureStatusExistsById.execute(statusId);
         }
 
-        const tasks: Task[] = this.taskRepository.getByFilters(new GetTasksCriteria(statusId, taskTitle));
+        const tasks: Task[] = await this.taskRepository.getByFilters(new GetTasksCriteria(statusId, taskTitle));
 
         return GetTasksMapper.toResults(tasks);
     }

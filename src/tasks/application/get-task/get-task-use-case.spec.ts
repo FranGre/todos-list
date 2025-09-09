@@ -61,7 +61,7 @@ describe('GetTaskUseCase', () => {
         return createTaskUseCase.execute(new CreateTaskCommand(statusId, title));
     }
 
-    function getTask(id: string): GetTaskResult {
-        return getTaskUseCase.execute(new GetTaskQuery(id));
+    async function getTask(id: string): Promise<GetTaskResult> {
+        return await getTaskUseCase.execute(new GetTaskQuery(id));
     }
 });

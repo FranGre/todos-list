@@ -1,6 +1,7 @@
-import { createConnection, Connection } from 'mysql2/promise';
-import { executeStatusRepositoryTests } from '../../../domain/repositories/status-repository.spec';
-import { MySqlStatusRepository } from './mysql-status-repository';
+import { Connection, createConnection } from 'mysql2/promise';
+import { MySqlStatusRepository } from '../../../../statuses/infrastructure/persistence/mysql/mysql-status-repository';
+import { execute } from '../../../domain/repositories/task-repository.spec';
+import { MySqlTaskRepository } from './mysql-task-repository';
 
 describe('MySqlStatusRepository', () => {
     let connection: Connection;
@@ -19,5 +20,5 @@ describe('MySqlStatusRepository', () => {
         await connection.execute(`DELETE FROM statuses;`);
     });
 
-    executeStatusRepositoryTests(() => new MySqlStatusRepository(connection));
+    execute(() => new MySqlTaskRepository(connection), () => new MySqlStatusRepository(connection));
 });

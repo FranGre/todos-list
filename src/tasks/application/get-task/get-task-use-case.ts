@@ -8,10 +8,10 @@ export class GetTaskUseCase {
 
     constructor(private readonly ensureTaskExistsById: EnsureTaskExistsById) { }
 
-    execute(query: GetTaskQuery): GetTaskResult {
+    async execute(query: GetTaskQuery): Promise<GetTaskResult> {
         const taskId = new TaskId(query.id);
 
-        const task = this.ensureTaskExistsById.execute(taskId);
+        const task = await this.ensureTaskExistsById.execute(taskId);
 
         return GetTaskMapper.toResult(task);
     }

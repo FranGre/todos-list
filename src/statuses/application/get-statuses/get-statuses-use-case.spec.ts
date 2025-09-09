@@ -73,15 +73,15 @@ describe('GetStatusesUseCase', () => {
                 );
         });
 
-        it('should return an empty array when no status name matches', () => {
-            createStatus('Pendiente');
-            createStatus('En progreso');
-            createStatus('Realizado');
-            createStatus('Revisión');
+        it('should return an empty array when no status name matches', async () => {
+            await createStatus('Pendiente');
+            await createStatus('En progreso');
+            await createStatus('Realizado');
+            await createStatus('Revisión');
 
             const notMatchesName = 'jugar';
 
-            expect(getStatuses(notMatchesName))
+            expect(await getStatuses(notMatchesName))
                 .toEqual([]);
         });
     });

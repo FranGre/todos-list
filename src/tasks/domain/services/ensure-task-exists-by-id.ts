@@ -7,8 +7,8 @@ export class EnsureTaskExistsById {
 
     constructor(private readonly taskRepository: TaskRepository) {}
 
-    execute(taskId: TaskId): Task {
-        const task = this.taskRepository.findById(taskId)
+    async execute(taskId: TaskId): Promise<Task> {
+        const task = await this.taskRepository.findById(taskId)
 
         if (!task) {
             throw new TaskNotFoundByIdError(taskId.value());

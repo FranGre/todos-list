@@ -12,12 +12,12 @@ export class DeleteTaskUseCase {
         private readonly ensureTaskExistsById: EnsureTaskExistsById
     ) {}
 
-    execute(command: DeleteTaskCommand): DeleteTaskResult {
+    async execute(command: DeleteTaskCommand): Promise<DeleteTaskResult> {
         const taskId = new TaskId(command.id);
 
-        const task = this.ensureTaskExistsById.execute(taskId);
+        const task = await this.ensureTaskExistsById.execute(taskId);
 
-        this.taskRepository.remove(taskId);
+        await this.taskRepository.remove(taskId);
 
         return DeleteTaskMapper.toResult(task);
     }

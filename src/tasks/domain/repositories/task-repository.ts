@@ -5,16 +5,16 @@ import { TaskId } from "../value-objects/task-id/task-id";
 
 export interface TaskRepository {
 
-    create(task: Task): void;
+    create(task: Task): Promise<void>;
 
-    findById(taskId: TaskId): Task | null;
+    findById(taskId: TaskId): Promise<Task | null>;
 
-    remove(taskId: TaskId): void;
+    remove(taskId: TaskId): Promise<void>;
 
-    update(task: Task): void;
+    update(task: Task): Promise<void>;
 
-    getByStatusId(statusId: StatusId): Task[];
+    getByStatusId(statusId: StatusId): Promise<Task[]>;
 
-    getByFilters(criteria: GetTasksCriteria): Task[];
+    getByFilters(criteria: GetTasksCriteria): Promise<Task[]>;
 
 }

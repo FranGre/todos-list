@@ -7,11 +7,11 @@ import { GetTasksCriteria } from "src/tasks/domain/criteria/get-tasks-criteria";
 export class InMemoryTaskRepository implements TaskRepository {
     public tasks: Task[] = [];
 
-    create(task: Task): void {
+    async create(task: Task): Promise<void> {
         this.tasks.push(task);
     }
 
-    findById(taskId: TaskId): Task | null {
+    async findById(taskId: TaskId): Promise<Task | null> {
         for (const task of this.tasks) {
             if (task.id().value() == taskId.value()) {
                 return task;
@@ -21,11 +21,11 @@ export class InMemoryTaskRepository implements TaskRepository {
         return null;
     }
 
-    remove(taskId: TaskId): void {
+    async remove(taskId: TaskId): Promise<void> {
         this.tasks = this.tasks.filter((task) => task.id().value() != taskId.value());
     }
 
-    update(task: Task): void {
+    async update(task: Task): Promise<void> {
         let newTasks: Task[] = [];
 
         for (const element of this.tasks) {
@@ -37,7 +37,7 @@ export class InMemoryTaskRepository implements TaskRepository {
         }
     }
 
-    getByStatusId(statusId: StatusId): Task[] {
+    async getByStatusId(statusId: StatusId): Promise<Task[]> {
         let tasks: Task[] = [];
 
         for (const task of this.tasks) {
@@ -49,7 +49,7 @@ export class InMemoryTaskRepository implements TaskRepository {
         return tasks;
     }
 
-    getByFilters(criteria: GetTasksCriteria): Task[] {
+    async getByFilters(criteria: GetTasksCriteria): Promise<Task[]> {
         let tasks: Task[] = [];
 
         const hasStatusId = criteria.statusId !== undefined;
