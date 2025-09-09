@@ -1,3 +1,4 @@
+import { Inject, Injectable } from "@nestjs/common";
 import { GetStatusesCriteria } from "../../../../statuses/application/get-statuses/get-statuses-criteria";
 import { StatusRepository } from "../../../../statuses/domain/repositories/status-repository";
 import { Status } from "../../../../statuses/domain/status";
@@ -5,11 +6,13 @@ import { StatusId } from "../../../../statuses/domain/value-objects/status-id/st
 import { StatusName } from "../../../../statuses/domain/value-objects/status-name/status-name";
 import { Connection, RowDataPacket } from 'mysql2/promise';
 
-export class MySqlStatusRepository implements StatusRepository {
+@Injectable()
+export class MySqlStatusRepository extends StatusRepository {
 
     private _connection: Connection;
 
-    constructor(connection: Connection) {
+    constructor(@Inject('DB_CONNECTION') connection: Connection) {
+        super();
         this._connection = connection;
     }
 

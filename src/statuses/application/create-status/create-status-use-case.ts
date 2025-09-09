@@ -6,10 +6,11 @@ import { CreateStatusMapper } from "./create-status-mapper";
 import { Status } from "../../domain/status";
 import { StatusRepository } from "../../domain/repositories/status-repository";
 import { StatusNameAlreadyExistsError } from "../../domain/errors/status-name-already-exists-error";
+import { Inject } from "@nestjs/common";
 
 export class CreateStatusUseCase {
 
-    constructor(private statusRepository: StatusRepository) {}
+    constructor(@Inject(StatusRepository) private statusRepository: StatusRepository) { }
 
     async execute(command: CreateStatusCommand): Promise<CreateStatusResult> {
         const statusId = new StatusId();
@@ -18,7 +19,7 @@ export class CreateStatusUseCase {
         if (await this.statusRepository.findByName(statusName)) {
             throw new StatusNameAlreadyExistsError(statusName.value());
         }
-        
+
         const status = new Status(statusId, statusName);
 
         this.statusRepository.create(status);
