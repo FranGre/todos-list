@@ -7,8 +7,8 @@ export class EnsureStatusHasNoAssociatedTasks {
 
     constructor(private readonly taskRepository: TaskRepository) { }
 
-    execute(statusId: StatusId): void {
-        const tasks = this.taskRepository.getByStatusId(statusId)
+    async execute(statusId: StatusId): Promise<void> {
+        const tasks = await this.taskRepository.getByStatusId(statusId)
 
         if (tasks.length >= 1) {
             throw new StatusHasAssociatedTasksError(statusId.value());

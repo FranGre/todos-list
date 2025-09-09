@@ -13,18 +13,18 @@ export class ChangeTaskStatusUseCase {
         private readonly taskRepository: TaskRepository,
         private readonly ensureTaskExistsById: EnsureTaskExistsById,
         private readonly ensureStatusExistsById: EnsureStatusExistsById,
-    ) {}
+    ) { }
 
-    execute(command: ChangeTaskStatusCommand): ChangeTaskStatusResult {
+    async execute(command: ChangeTaskStatusCommand): Promise<ChangeTaskStatusResult> {
         const taskId = new TaskId(command.taskId);
         const statusId = new StatusId(command.statusId);
 
-        const task = this.ensureTaskExistsById.execute(taskId);
-        this.ensureStatusExistsById.execute(statusId);
-        
+        const task = await this.ensureTaskExistsById.execute(taskId);
+        await this.ensureStatusExistsById.execute(statusId);
+
         task.changeStatus(statusId);
 
-        this.taskRepository.update(task);
+        await this.taskRepository.update(task);
 
         return ChangeTaskStatusMapper.toResult(task);
     }
