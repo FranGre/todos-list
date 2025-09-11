@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { applyDecorators, Body, Controller, HttpStatus, Post } from '@nestjs/common';
 import { CreateStatusCommand } from 'src/statuses/application/create-status/create-status-command';
 import { CreateStatusUseCase } from 'src/statuses/application/create-status/create-status-use-case';
 import { CreateStatusDto } from './create-status-dto';
@@ -9,13 +9,17 @@ import { StatusNameTooLongError } from 'src/statuses/domain/errors/status-name-t
 import { BaseResponse } from 'src/shared/infrastructure/responses/base/base-response';
 import { SuccessResponse } from 'src/shared/infrastructure/responses/success/success-response';
 import { ErrorResponse } from 'src/shared/infrastructure/responses/error/error-response';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateStatusDocs } from './docs/create-status-docs';
 
+@ApiTags('statuses')
 @Controller('statuses')
 export class CreateStatusController {
 
     constructor(private _createStatusUseCase: CreateStatusUseCase) { }
 
     @Post()
+    @applyDecorators(...CreateStatusDocs.docs())
     async execute(@Body() dto: CreateStatusDto): Promise<BaseResponse> {
         const command = new CreateStatusCommand(dto.name);
         try {
