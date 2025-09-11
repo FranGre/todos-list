@@ -10,7 +10,7 @@ import { BaseResponse } from 'src/shared/infrastructure/responses/base/base-resp
 import { SuccessResponse } from 'src/shared/infrastructure/responses/success/success-response';
 import { ErrorResponse } from 'src/shared/infrastructure/responses/error/error-response';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateStatusDocs } from './docs/create-status-docs';
+import { CreateStatusDocs } from './create-status-docs';
 
 @ApiTags('statuses')
 @Controller('statuses')
